@@ -18,7 +18,7 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
    git clone git@github.com:EMasterGIT/BookManagementApp.git
 2. Liikuge projekti kausta:
    ```bash
-   cd raamatute-haldamine-api
+   cd BookManagementApp
 3. Installige vajalikud sõltuvused:
    ```bash
    npm install
