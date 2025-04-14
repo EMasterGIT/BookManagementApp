@@ -3,7 +3,7 @@ const router = express.Router();
 const { Author } = require('../src/models');
 const { authenticateJWT, authorizeRole } = require('../middlewares/auth.middleware');
 
-// Get all authors
+// GET kõik autorid
 /**
  * @swagger
  * tags:
@@ -34,7 +34,7 @@ const { authenticateJWT, authorizeRole } = require('../middlewares/auth.middlewa
  */
 router.get('/', authenticateJWT, async (req, res) => {
   try {
-    const authors = await Author.findAll(); // Fetch all authors from the database
+    const authors = await Author.findAll(); // Fetch kõik autorid
     res.json({ authors });
   } catch (error) {
     console.error('Error fetching authors:', error);

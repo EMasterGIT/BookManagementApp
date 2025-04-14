@@ -2,7 +2,7 @@ const winston = require('winston');
 const { Log } = require('../src/models');
 const path = require('path');
 
-// Custom log format
+// logimise funktsioon
 const customFormat = winston.format.printf(({ level, message, timestamp }) => {
   return `${timestamp} [${level.toUpperCase()}]: ${message}`;
 });
@@ -11,7 +11,7 @@ const customFormat = winston.format.printf(({ level, message, timestamp }) => {
 const fileLogger = winston.createLogger({
   level: 'info',  
   format: winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), // Timestamp format
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), // Timestamp
     customFormat // Custom log format
   ),
   transports: [
@@ -25,7 +25,7 @@ const fileLogger = winston.createLogger({
 
 
 
-// Logging function
+// logimise funktsioon
 module.exports.logAction = async (action, userId, description) => {
   try {
     console.log('Logimine andmebaasi:', { action, userId, description }); // Console logging
@@ -33,7 +33,7 @@ module.exports.logAction = async (action, userId, description) => {
 
     // Logisõnum faili
     const message = `Tegevus: ${action}, Kasutaja: ${userId}, Kirjeldus: ${description}`;
-    fileLogger.info(message); // Custom log format
+    fileLogger.info(message); 
   } catch (error) {
     console.error('Viga tegevuse logimisel:', error);
   }
@@ -49,7 +49,7 @@ module.exports.logLogin = async (userId) => {
   }
 };
 
-// Function to log user registration
+// Funktsioon registreerimise logimiseks
 module.exports.logRegistration = async (userId) => {
   try {
     const action = 'USER_REGISTRATION';

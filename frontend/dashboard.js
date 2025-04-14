@@ -1,8 +1,9 @@
 const API_URL = 'http://localhost:5000/api';
 
-let authors = []; // Global variable to store authors
+let authors = []; // Globaalne muutuja autorite salvestamiseks
 
-// Helper function to decode JWT and get the user's role
+
+// Abifunktsioon JWT dekodeerimiseks ja kasutaja rolli saamiseks
 function getUserRole() {
   const token = localStorage.getItem('token');
   if (!token) return null;
@@ -15,7 +16,89 @@ function getUserRole() {
   }
 }
 
-// Fetch authors and store globally
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    window.location.href = '/';
+    return;
+  }
+
+    await fetchAuthors(token);
+    fetchBooks(token);
+
+  // Logide nupu loomine ja sündmuste kuulamine
+  // Ainult Admin rolliga kasutajatele
+  if (getUserRole() === 'Admin') {
+    const logsBtn = document.createElement('button');
+    logsBtn.textContent = 'View Logs';
+    logsBtn.id = 'view-logs-btn';
+    logsBtn.style.margin = '10px';
+
+    logsBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(`${API_URL}/logs`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) throw new Error(`Failed to fetch logs: ${res.status}`);
+        const logs = await res.json();
+
+        const existingLogs = document.getElementById('logs-container');
+        if (existingLogs) existingLogs.remove();
+
+        const logsContainer = document.createElement('div');
+        logsContainer.id = 'logs-container';
+        logsContainer.style.border = '1px solid #ccc';
+        logsContainer.style.padding = '10px';
+        logsContainer.style.marginTop = '20px';
+        logsContainer.style.backgroundColor = '#f9f9f9';
+
+        logsContainer.innerHTML = `
+        <h3>System Logs</h3>
+      <ul>
+        ${logs.map(log => {
+          
+
+          // Kasuta logi loomise kuupäev ja kellaaeg  
+          let timestamp = log.createdAt ? new Date(log.createdAt) : new Date();
+
+          // Kui kuupäev on vale, kasuta praegust aega
+          if (isNaN(timestamp.getTime())) {
+            timestamp = new Date(); 
+          }
+
+          return `<li><strong>${timestamp.toLocaleString()}</strong>: ${log.description}</li>`;
+        }).join('')}
+      </ul>
+    `;
+  
+      document.body.appendChild(logsContainer);
+    } catch (err) {
+      console.error('Error loading logs:', err);
+      alert('Could not load logs');
+    }
+  });
+
+    
+    document.body.appendChild(logsBtn);
+  }
+
+  const logoutButton = document.getElementById('logout-button');
+  if (logoutButton) {
+    logoutButton.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      window.location.href = '/';
+    });
+  }
+});
+
+
+
+
+// Autorite hankimine ja globaalsesse muutujasse salvestamine
 async function fetchAuthors(token) {
   if (!token) {
     console.error("Token is not available!");
@@ -33,13 +116,13 @@ async function fetchAuthors(token) {
 
     const data = await response.json();
     authors = data.authors || [];
-    console.log('Fetched authors:', authors);
+    
   } catch (err) {
     console.error('Failed to fetch authors:', err);
   }
 }
 
-// Function to update the author's name
+// Funktsioon autori nime uuendamiseks
 async function updateAuthor(authorId, newName, token) {
   const [firstName, lastName] = newName.split(' ');
   try {
@@ -67,7 +150,7 @@ async function updateAuthor(authorId, newName, token) {
   }
 }
 
-// Function to create a new author
+// Funktsioon uue autori loomiseks
 async function createAuthor(newName, token) {
   const [firstName, lastName] = newName.split(' ');
   try {
@@ -102,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  await fetchAuthors(token); // Load authors before books
+  await fetchAuthors(token); // Laadi autorid enne raamatuid
   fetchBooks(token);
 
   const logoutButton = document.getElementById('logout-button');
@@ -114,7 +197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Function to fetch and display books
+// Funktsioon raamatute hankimiseks ja kuvamiseks
 function fetchBooks(token) {
   if (!token) {
     console.error("No token available!");
@@ -188,14 +271,14 @@ function fetchBooks(token) {
                 console.log('Matched author:', matchedAuthor);
 
                 if (matchedAuthor) {
-                  // Update the author name in the database
+                  // Uuenda autori nime andmebaasis
                   const updatedAuthor = await updateAuthor(matchedAuthor.id, trimmedAuthorName, token);
                   if (updatedAuthor) {
                     updateData.authorIds = [updatedAuthor.id];
                     console.log('Updated author:', updatedAuthor);
                   }
                 } else {
-                  // Create a new author if no match is found
+                  // Loo uus autor, kui vastet ei leitud
                   const newAuthor = await createAuthor(trimmedAuthorName, token);
                   updateData.authorIds = [newAuthor.id];
                   console.log('Created new author:', newAuthor);
@@ -218,7 +301,7 @@ function fetchBooks(token) {
     .catch(error => console.error('Failed to load books:', error));
 }
 
-// Event delegation for comment submission
+// Kommentaari saatmise sündmuste kuulamine
 document.addEventListener('click', (event) => {
   if (event.target.classList.contains('comment-btn')) {
     const bookId = event.target.getAttribute('data-book-id');
@@ -249,7 +332,7 @@ document.addEventListener('click', (event) => {
   }
 });
 
-// Admin: Delete Book
+// Admin: Kustuta raamat
 const deleteBook = (bookId, token) => {
   if (confirm('Are you sure you want to delete this book?')) {
     fetch(`${API_URL}/books/${bookId}`, {
@@ -270,7 +353,7 @@ const deleteBook = (bookId, token) => {
   }
 };
 
-// Admin: Update Book
+// Admin: Uuenda raamat
 const updateBook = (bookId, updateData, token) => {
   fetch(`${API_URL}/books/${bookId}`, {
     method: 'PUT',

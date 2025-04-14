@@ -5,7 +5,7 @@ const router = express.Router();
 const { authenticateJWT, authorizeRole } = require('../middlewares/auth.middleware');
 const commentController = require('../controllers/comment.controller');
 
-// GET: Fetch comments (protected)
+// GET: Fetch kommmentaarid
 /**
  * @swagger
  * tags:
@@ -78,13 +78,12 @@ const commentController = require('../controllers/comment.controller');
 
 router.get('/', authenticateJWT, authorizeRole('User', 'Admin'), commentController.getComments);
 
-// POST: Add comment
+// POST: Lisa uus kommentaar
 router.post('/', authenticateJWT, authorizeRole('User', 'Admin'), commentController.createComment);
 
-// PUT: Update comment (Admin only)
-//router.put('/:id', authenticateJWT, authorizeRole('Admin'), commentController.updateComment);
 
-// DELETE: Delete comment (Admin only)
+
+// DELETE: Kustuta kommentaar (ainult Admin)
 router.delete('/:id', authenticateJWT, authorizeRole('Admin'), commentController.deleteComment);
 
 

@@ -4,7 +4,7 @@ const router = express.Router();
 const { authenticateJWT, authorizeRole} = require('../middlewares/auth.middleware');
 const bookController = require('../controllers/book.controller');
 
-// Get all books (accessible to logged in users)
+// GET kõik raamatud
 /**
  * @swagger
  * tags:
@@ -37,7 +37,7 @@ const bookController = require('../controllers/book.controller');
 router.get('/', authenticateJWT, authorizeRole('User', 'Admin'), bookController.getBooks);
 
 
-// Allow only Admin to update books
+// Luba ainud Adminil lisada uusi raamatuid
 /**
  * @swagger
  * /api/books/{id}:
@@ -69,7 +69,7 @@ router.get('/', authenticateJWT, authorizeRole('User', 'Admin'), bookController.
  */
 router.put('/:id', authenticateJWT, authorizeRole('Admin'), bookController.updateBook);
 
-// Allow only Admin to delete books
+// Ainult Adminil on õigus kustutada raamatuid
 /**
  * @swagger
  * /api/books/{id}:

@@ -23,18 +23,18 @@ const swaggerOptions = {
       description: 'This is the API documentation for the Book Management system'
     }
   },
-  // Path to the API docs (route files where @swagger annotations are present)
+  // API docs
   apis: ['./routes/*.js', './controllers/*.js'] 
 };
 
-// Initialize swagger-jsdoc
+// swagger-jsdoc
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
 
-// Serve static files from the 'frontend' directory in the root
+// Staatilised failid
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Middleware
+// CORS
 app.use(cors({
   origin: 'http://localhost:3000', // Frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -50,14 +50,14 @@ const logRoutes = require('../routes/log.routes');
 const authorRoutes = require('../routes/author.routes');
 
 // API Endpoints
-app.use('/api/auth', authRoutes);           // For login/register
-app.use('/api/books', bookRoutes);          // For book listing, updating, deleting
-app.use('/api/comments', commentRoutes);    // For adding and deleting comments
-app.use('/api/authors', authorRoutes);      // For author listing
-app.use('/api/logs', logRoutes);            // For activity logs
+app.use('/api/auth', authRoutes);           // login/register
+app.use('/api/books', bookRoutes);          // Raamatute CRUD
+app.use('/api/comments', commentRoutes);    // Kommentide CRUD
+app.use('/api/authors', authorRoutes);      // Autorite CRUD
+app.use('/api/logs', logRoutes);            // Logid
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Frontend page routes
+// Frontend lehed
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });

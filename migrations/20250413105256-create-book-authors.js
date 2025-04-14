@@ -1,4 +1,4 @@
-// migrations/xxxxxx-create-book-authors.js
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('BookAuthors', {

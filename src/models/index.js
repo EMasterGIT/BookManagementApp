@@ -15,7 +15,7 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-// Load all models
+// Lae kõik mudelid
 fs.readdirSync(__dirname)
   .filter(file => (
     file.indexOf('.') !== 0 && 
@@ -27,7 +27,7 @@ fs.readdirSync(__dirname)
     db[model.name] = model;
   });
 
-// Set up model associations
+// Seosta mudelid
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

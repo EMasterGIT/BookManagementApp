@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../src/models');
 const { logLogin, logRegistration } = require('../utils/logger');
 
-// Register function
+// Registreerimine
 const register = async (req, res) => {
   try {
     const { username, password, role } = req.body;  
@@ -15,14 +15,14 @@ const register = async (req, res) => {
       password: hashedPassword,
       role
     });
-    await logRegistration(user.id);
+    await logRegistration(user.id); // Logi registreerimine
     res.status(201).json({ message: 'User registered', user: { id: user.id, username: user.username, role: user.role } });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Login function
+// Login funktioon
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;  
@@ -33,7 +33,7 @@ const login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    await logLogin(user.id);  // Log the login activity
+    await logLogin(user.id);  // Logi sisse logimine
     res.json({ message: 'Login successful', token });
   } catch (error) {
     res.status(500).json({ error: error.message });

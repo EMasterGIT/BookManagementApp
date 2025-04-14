@@ -3,7 +3,7 @@ const { User } = require('../src/models');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
 
-// Middleware to authenticate the token
+// Middleware tokeni kontrollimiseks
 const authenticateJWT = async (req, res, next) => {
   console.log('Authorization Header:', req.headers.authorization);
   const authHeader = req.headers.authorization;
@@ -23,7 +23,7 @@ const authenticateJWT = async (req, res, next) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    req.user = user; // Attach the user to the request
+    req.user = user; // Lisa kasutaja objekt päringusse
     next();
   } catch (error) {
     console.error('JWT error:', error.message);
@@ -32,7 +32,7 @@ const authenticateJWT = async (req, res, next) => {
   
 };
 
-// Middleware to check user role
+// Middleware kasutaja rolli kontrollimiseks
 const authorizeRole = (...allowedRoles) => {
   return (req, res, next) => {
     const userRole = req.user && req.user.role; 

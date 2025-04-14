@@ -1,37 +1,37 @@
 const API_URL = 'http://localhost:5000/api';
 
-// Login function
+// Sisselogimise funktsioon
 const login = async (username, password) => {
   try {
-    // Send POST request to /api/auth/login
+    // Saada POST-päring aadressile /api/auth/login
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json', // Send JSON data
+        'Content-Type': 'application/json', // Saada JSON-andmed
       },
       body: JSON.stringify({ username, password }),
     });
 
-    // Handle non-200 responses
+    // Töötle mitte-200 vastuseid
     if (!response.ok) {
-      throw new Error('Failed to log in');
+      throw new Error('Sisselogimine ebaõnnestus');
     }
 
-    // Parse JSON response
+    // Parsige JSON-vastus
     const data = await response.json();
 
-    // Store the token in localStorage
+    // Salvesta token localStorage'i
     localStorage.setItem('token', data.token);
 
-    // Redirect to dashboard upon successful login
+    // Suuna edukal sisselogimisel juhtpaneelile
     window.location.href = '/dashboard';
   } catch (error) {
-    console.error('Error during login:', error);
-    alert('Login failed: ' + error.message);
+    console.error('Viga sisselogimisel:', error);
+    alert('Sisselogimine ebaõnnestus: ' + error.message);
   }
 };
 
-// Register function 
+// Registreerimise funktsioon
 const register = async (username, password, role) => {
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
@@ -40,41 +40,41 @@ const register = async (username, password, role) => {
       body: JSON.stringify({ username, password, role }),
     });
 
-    if (!response.ok) throw new Error('Failed to register');
+    if (!response.ok) throw new Error('Registreerimine ebaõnnestus');
 
     const data = await response.json();
-    alert('Registration successful! Please log in.');
-    // Optionally, redirect to the login page (index.html)
+    alert('Registreerimine õnnestus! Palun logi sisse.');
+    
     window.location.href = '/';
   } catch (error) {
-    console.error('Error during registration:', error);
-    alert('Registration failed: ' + error.message);
+    console.error('Viga registreerimisel:', error);
+    alert('Registreerimine ebaõnnestus: ' + error.message);
   }
 };
 
-// Function to check if the user is authenticated
+// Funktsioon, et kontrollida, kas kasutaja on autentitud
 const checkAuth = () => {
   const token = localStorage.getItem('token');
   if (token) {
-    // If on the login page and already logged in, redirect to dashboard.
+    // Kui ollakse sisselogimislehel ja juba sisse logitud, suuna juhtpaneelile.
     if (window.location.pathname === '/') {
       window.location.href = '/dashboard';
     }
   } else {
-    // If no token and not on the login page, redirect to login (index.html)
+    // Kui token puudub ja ei olda sisselogimislehel, suuna sisselogimislehele (index.html)
     if (window.location.pathname !== '/') {
       window.location.href = '/';
     }
   }
 };
 
-// Wait for DOM to load
+// Oota, kuni DOM on laaditud
 document.addEventListener('DOMContentLoaded', () => {
-  // Get form elements
+  // Hangi vormi elemendid
   const loginForm = document.getElementById('login-form');
-  const registerForm = document.getElementById('register-form'); // Registration form
+  const registerForm = document.getElementById('register-form'); // Registreerimisvorm
 
-  // Add submit event listener for login form
+  // Lisa sisselogimisvormile submit-sündmuse kuulaja
   if (loginForm) {
     loginForm.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Add submit event listener for register form
+  // Lisa registreerimisvormile submit-sündmuse kuulaja
   if (registerForm) {
     registerForm.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -95,10 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Check authentication status on page load
+  // Kontrolli autentimise staatust lehe laadimisel
   checkAuth();
 
-  // Logout functionality: get logout button and attach event listener
+  // Logout-funktsionaalsus: hangi logout-nupp ja lisa sündmuse kuulaja
   const logoutButton = document.getElementById('logout-button');
   if (logoutButton) {
     logoutButton.addEventListener('click', () => {
