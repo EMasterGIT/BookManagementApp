@@ -1,0 +1,41 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <h1>Login</h1>
+  <form id="login-form">
+    <div>
+      <label for="username">Username:</label>
+      <input type="text" id="username" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" required>
+    </div>
+    <div>
+      <button type="submit">Login</button>
+    </div>
+  </form>
+  <h3>New User? Register here</h3>
+<form id="register-form">
+  <input type="text" id="register-username" placeholder="Username" required />
+  <input type="password" id="register-password" placeholder="Password" required />
+  <select id="role">
+    <option value="User">User</option>
+    <option value="Admin">Admin</option>
+  </select>
+  <button id="register-button" type="submit">Register</button>
+</form>
+
+
+  <!-- Move this script tag here, just before closing </body> -->
+  <script src="script.js"></script>
+</body>
+</html>
