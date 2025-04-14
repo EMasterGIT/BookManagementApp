@@ -1,25 +1,25 @@
 // controllers/log.controller.js
 const { Log } = require('../src/models');
-const { logAction } = require('../utils/logger') // make sure this is calling the logger factory properly
+const { logAction } = require('../utils/logger')
 
-// Kasutaja tegevuse logimine
+// User activity logging
 const createLog = async (userId, action, details) => {
   try {
     // Calling logAction here
     await logAction(action, userId, details); // use logAction to log activity
     console.log('Log created');
   } catch (error) {
-    console.error('Logimise viga:', error);
+    console.error('Log error:', error);
   }
 };
 
-// Logide vaatamine
+// Looking up logs
 const getLogs = async (req, res) => {
   try {
     const logs = await Log.findAll();
     return res.status(200).json(logs);
   } catch (error) {
-    return res.status(500).json({ message: 'Logide laadimine ebaõnnestus', error });
+    return res.status(500).json({ message: 'Getting logs failed', error });
   }
 };
 

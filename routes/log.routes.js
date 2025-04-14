@@ -1,8 +1,8 @@
 // routes/log.routes.js
 const express = require('express');
 const router = express.Router();
-const { authenticateJWT, authorizeRole } = require('../middlewares/auth.middleware'); // Correct import
-const { getLogs } = require('../controllers/log.controller'); // Example controller
+const { authenticateJWT, authorizeRole } = require('../middlewares/auth.middleware');
+const { getLogs } = require('../controllers/log.controller'); 
 
 // Log viewing route, restricted to "Admin" role
 /**

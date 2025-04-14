@@ -24,7 +24,7 @@ const swaggerOptions = {
     }
   },
   // Path to the API docs (route files where @swagger annotations are present)
-  apis: ['./routes/*.js', './controllers/*.js']  // Adjust paths as needed
+  apis: ['./routes/*.js', './controllers/*.js'] 
 };
 
 // Initialize swagger-jsdoc

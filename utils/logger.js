@@ -2,38 +2,38 @@ const winston = require('winston');
 const { Log } = require('../src/models');
 const path = require('path');
 
-// Kohandatud logimise formaat
+// Custom log format
 const customFormat = winston.format.printf(({ level, message, timestamp }) => {
   return `${timestamp} [${level.toUpperCase()}]: ${message}`;
 });
 
-// Loo winston logger faililogimiseks kohandatud formaadiga
+// Winston logger
 const fileLogger = winston.createLogger({
-  level: 'info',  // Logimise tase, mida salvestada
+  level: 'info',  
   format: winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), // Ajatempli formaat
-    customFormat // Kohandatud logisõnumi formaat
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), // Timestamp format
+    customFormat // Custom log format
   ),
   transports: [
     new winston.transports.File({
       filename: path.join(__dirname, '../docs/app.log'),
       level: 'info',
     }),
-    new winston.transports.Console()  // Valikuline: logi ka konsooli
+    new winston.transports.Console()
   ],
 });
 
 
 
-// Logimine andmebaasi
+// Logging function
 module.exports.logAction = async (action, userId, description) => {
   try {
-    console.log('Logimine andmebaasi:', { action, userId, description }); // Silumisrida
+    console.log('Logimine andmebaasi:', { action, userId, description }); // Console logging
     await Log.create({ action, userId, description });
 
     // Logisõnum faili
     const message = `Tegevus: ${action}, Kasutaja: ${userId}, Kirjeldus: ${description}`;
-    fileLogger.info(message); // Logi faili kohandatud formaadiga
+    fileLogger.info(message); // Custom log format
   } catch (error) {
     console.error('Viga tegevuse logimisel:', error);
   }

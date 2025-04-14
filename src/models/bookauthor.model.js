@@ -3,14 +3,14 @@ module.exports = (sequelize, DataTypes) => {
     bookId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'Books', // Viitab Book mudelile
+        model: 'Books',
         key: 'id',
       },
     },
     authorId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'Authors', // Viitab Author mudelile
+        model: 'Authors',
         key: 'id',
       },
     },

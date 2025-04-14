@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../src/models'); // adjust if your User model path is different
+const { User } = require('../src/models'); 
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
 
@@ -35,7 +35,7 @@ const authenticateJWT = async (req, res, next) => {
 // Middleware to check user role
 const authorizeRole = (...allowedRoles) => {
   return (req, res, next) => {
-    const userRole = req.user && req.user.role; // Ensure req.user is set by authenticateJWT
+    const userRole = req.user && req.user.role; 
     if (!userRole || !allowedRoles.includes(userRole)) {
       return res.status(403).json({ message: 'Forbidden: Insufficient role' });
     }

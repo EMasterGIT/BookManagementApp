@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    description: { // Change from `details` to `description`
+    description: { 
       type: DataTypes.TEXT,
       allowNull: true
     }

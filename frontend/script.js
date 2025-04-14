@@ -1,6 +1,6 @@
 const API_URL = 'http://localhost:5000/api';
 
-// Define login function
+// Login function
 const login = async (username, password) => {
   try {
     // Send POST request to /api/auth/login
@@ -31,7 +31,7 @@ const login = async (username, password) => {
   }
 };
 
-// Define register function as a top-level function (not inside login)
+// Register function 
 const register = async (username, password, role) => {
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
