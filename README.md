@@ -28,7 +28,7 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
    DB_USER=teie-kasutajanimi
    DB_PASSWORD=teie-parool
    DB_NAME=raamatud
-   JWT_SECRET=teie-saladus
+   JWT_SECRET=supersecret
    DIALECT=andmebaas(nt postgres)
    PORT=port
 5. Käivitamiseks:
