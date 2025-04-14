@@ -29,3 +29,6 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
    DB_PASS=teie-parool
    DB_NAME=raamatud
    JWT_SECRET=teie-saladus
+5. Käivitamiseks:
+    ```bash
+   node src/app.js 
