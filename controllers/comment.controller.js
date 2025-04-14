@@ -53,4 +53,29 @@ const deleteComment = async (req, res) => {
   }
 };
 
+const updateComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    // Find comment by ID
+    const comment = await Comment.findByPk(id);
+    if (!comment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    // Update content if provided
+    if (content) {
+      comment.content = content;
+    }
+
+    await comment.save();
+
+    res.status(200).json({ message: 'Comment updated', comment });
+  } catch (error) {
+    console.error('Error updating comment:', error);
+    res.status(500).json({ error: 'Failed to update comment' });
+  }
+};
+
 module.exports = { getComments,createComment, updateComment, deleteComment };

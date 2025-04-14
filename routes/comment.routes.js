@@ -82,7 +82,7 @@ router.get('/', authenticateJWT, authorizeRole('User', 'Admin'), commentControll
 router.post('/', authenticateJWT, authorizeRole('User', 'Admin'), commentController.createComment);
 
 // PUT: Update comment (Admin only)
-router.put('/:id', authenticateJWT, authorizeRole('Admin'), commentController.updateComment);
+//router.put('/:id', authenticateJWT, authorizeRole('Admin'), commentController.updateComment);
 
 // DELETE: Delete comment (Admin only)
 router.delete('/:id', authenticateJWT, authorizeRole('Admin'), commentController.deleteComment);

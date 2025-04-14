@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const { Sequelize, DataTypes } = require('sequelize');
 const path = require('path');
-const config = require(path.join(__dirname, 'config', 'config.json'))[process.env.NODE_ENV || 'development'];
+const config = require(path.join(__dirname, 'config', 'config.js'))[process.env.NODE_ENV || 'development'];
 
 // Loo ühendus
 const sequelize = new Sequelize(config.database, config.username, config.password, config);

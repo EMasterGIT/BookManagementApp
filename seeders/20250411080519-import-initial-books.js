@@ -1,6 +1,6 @@
 const { Book, Author, Category } = require('../src/models');
 const axios = require('axios');
-const sequelize = require('../config/config.json'); 
+const sequelize = require('../config/config.js'); 
 
 const importBooks = async () => {
   const categories = ["fiction", "fantasy", "history", "romance", "mystery"];
