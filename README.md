@@ -26,9 +26,11 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
    ```bash
    DB_HOST=localhost
    DB_USER=teie-kasutajanimi
-   DB_PASS=teie-parool
+   DB_PASSWORD=teie-parool
    DB_NAME=raamatud
    JWT_SECRET=teie-saladus
+   DIALECT=andmebaas(nt postgres)
+   PORT=port
 5. Käivitamiseks:
     ```bash
    node src/app.js 
