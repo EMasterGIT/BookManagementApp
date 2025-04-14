@@ -1,1 +1,18 @@
-# BookManagementApp
+# Raamatute Haldamise API
+
+See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute, autorite, kommentaaride ja logide haldamist. API võimaldab registreerimist, sisselogimist, raamatute lisamist, kommenteerimist, autorite haldamist ja tegevuste logimist.
+
+## Funktsioonid
+
+- **Registreerimine ja sisselogimine**: Kasutajad saavad registreerida ja sisse logida.
+- **Raamatute haldamine**: Lisada uusi raamatuid, kustutada olemasolevaid ja uuendada.
+- **Kommentaaride lisamine ja kustutamine**: Kasutajad saavad lisada kommentaare raamatutele ja administratsioon saab neid kustutada.
+- **Autorite haldamine**: Uute autorite lisamine ja olemasolevate autorite kuvamine.
+- **Logimine**: Kõik tegevused salvestatakse logidesse.
+
+## Installimine
+
+1. Kloonige projekt oma masinasse:
+
+   ```bash
+   git clone https://github.com/teie-kasutajanimi/raamatute-haldamine-api.git
