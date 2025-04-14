@@ -15,7 +15,7 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
 1. Kloonige projekt oma masinasse:
 
    ```bash
-   git clone git@github.com:EMasterGIT/BookManagementApp.git
+   git clone https-link https://github.com/EMasterGIT/BookManagementApp.git
 2. Liikuge projekti kausta:
    ```bash
    cd BookManagementApp
