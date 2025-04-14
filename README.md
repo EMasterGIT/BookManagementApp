@@ -22,7 +22,7 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
 3. Installige vajalikud sõltuvused:
    ```bash
    npm install
-4. Looge .env fail, mis sisaldab järgmisi keskkonnamuutujaid:
+4. Täitke .env fail, mis sisaldab järgmisi keskkonnamuutujaid:
    ```bash
    DB_HOST=localhost
    DB_USER=teie-kasutajanimi
