@@ -30,7 +30,7 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
    DB_NAME=raamatud
    JWT_SECRET=supersecret
    DIALECT=andmebaas(nt postgres)
-   PORT=port
+ 
 5. Käivitamiseks:
     ```bash
    node src/app.js 
