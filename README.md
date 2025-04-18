@@ -34,7 +34,7 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
 5. Andmebaasi migreerimiseks:
     ```bash
    npx sequelize-cli db:migrate
-   ```bash
+    
    npx sequelize-cli db:seed:all 
 
 6. Käivitamiseks:
