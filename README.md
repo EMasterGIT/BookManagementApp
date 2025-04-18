@@ -31,6 +31,15 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
    JWT_SECRET=supersecret
    DIALECT=andmebaas(nt postgres)
  
-5. Käivitamiseks:
+5. Andmebaasi migreerimiseks:
     ```bash
-   node src/app.js 
+   npx sequelize-cli db:migrate
+   ```bash
+   npx sequelize-cli db:seed:all 
+
+6. Käivitamiseks:
+   ```bash
+   node src/app.js
+
+
+
