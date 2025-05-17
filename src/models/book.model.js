@@ -19,13 +19,20 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'bookId',
       otherKey: 'authorId'
     });
-
+  
     Book.hasMany(models.Comment, {
       foreignKey: 'bookId',
       as: 'Comments',
     });
-    
+  
+    Book.belongsTo(models.Category, {
+      foreignKey: 'categoryId',
+      as: 'Category'
+    });
   };
+  
+
+
 
   return Book;
 };

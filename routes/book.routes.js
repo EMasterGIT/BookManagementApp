@@ -4,6 +4,7 @@ const router = express.Router();
 const { authenticateJWT, authorizeRole} = require('../middlewares/auth.middleware');
 const bookController = require('../controllers/book.controller');
 
+
 // GET kõik raamatud
 /**
  * @swagger
@@ -11,6 +12,49 @@ const bookController = require('../controllers/book.controller');
  *   name: Books
  *   description: Book management
  */
+
+/**
+ * @swagger
+ * /api/books/search:
+ *   get:
+ *     summary: Search books by title or author
+ *     tags: [Books]
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A list of books matching the search criteria
+ */
+router.get('/search', authenticateJWT, authorizeRole('User', 'Admin'), bookController.searchBooks);
+
+
+
+
+/**
+ * @swagger
+ * /api/books/{id}:
+ *   get:
+ *     summary: Get a book by ID
+ *     tags: [Books]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: A book object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ */
+router.get('/:id',authenticateJWT, authorizeRole('User', 'Admin'), bookController.getBookById);
 /**
  * @swagger
  * /api/books:
@@ -87,6 +131,24 @@ router.put('/:id', authenticateJWT, authorizeRole('Admin'), bookController.updat
  *         description: Book removed
  */
 router.delete('/:id', authenticateJWT, authorizeRole('Admin'), bookController.deleteBook);
+
+
+/** @swagger
+ * /api/books:
+ *   post:
+ *     summary: Add a new book
+ *     tags: [Books]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+*/
+router.post('/', authenticateJWT, authorizeRole('Admin'), bookController.createBook);
 
 module.exports = router;
 

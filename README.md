@@ -37,9 +37,14 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
     
    npx sequelize-cli db:seed:all 
 
-6. Käivitamiseks:
+6. Käivitamiseks server:
    ```bash
    node src/app.js
+
+6. Käivitamiseks frontend:
+   ```bash
+   cd book-dashboard
+   npm start
 
 
 

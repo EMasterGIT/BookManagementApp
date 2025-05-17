@@ -1,6 +1,49 @@
 // controllers/book.controller.js
-const { Book, Author, Comment, User } = require('../src/models');
+const { Book, Author, Comment, User, Category } = require('../src/models');
 const { logAction } = require('../utils/logger');
+
+// Hankige konkreetne raamat ID alusel
+const getBookById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const book = await Book.findByPk(id, {
+      include: [
+        {
+          model: Author,
+          as: 'Authors',
+          through: { attributes: [] }
+        },
+        {
+          model: Category,
+          as: 'Category'
+        },
+        {
+          model: Comment,
+          as: 'Comments',
+          include: [
+            {
+              model: User,
+              as: 'User',
+              attributes: ['username']
+            }
+          ]
+        }
+      ]
+    });
+
+    if (!book) {
+      return res.status(404).json({ message: 'Raamatut ei leitud' });
+    }
+
+    res.json(book);
+  } catch (error) {
+    console.error('Viga raamatu leidmisel:', error);
+    res.status(500).json({ error: 'Raamatu leidmine ebaõnnestus' });
+  }
+};
+
+
+
 
 // Raamatute hankimine
 const getBooks = async (req, res) => {
@@ -92,4 +135,114 @@ const deleteBook = async (req, res) => {
   }
 };
 
-module.exports = { getBooks, updateBook, deleteBook };
+// Otsingufunktsioon raamatute leidmiseks pealkirja või autori järgi
+const { Op, literal } = require('sequelize');
+
+
+const searchBooks = async (req, res) => {
+  const { q, field } = req.query;
+
+  if (!q || q.trim() === '') {
+    return res.status(400).json({ message: 'Otsingusõna on kohustuslik' });
+  }
+
+  const query = q.trim();
+  const where = {};
+  const include = [];
+
+  try {
+    switch (field) {
+      case 'title':
+        where.title = { [Op.iLike]: `%${query}%` };
+        break;
+    
+      case 'year':
+        where[Op.and] = [
+          literal(`CAST("Book"."publicationYear" AS TEXT) ILIKE '%${query}%'`)
+        ];
+        break;
+    
+      case 'author':
+        include.push({
+          model: Author,
+          as: 'Authors',
+          through: { attributes: [] },
+          where: {
+            [Op.or]: [
+              { firstName: { [Op.iLike]: `%${query}%` } },
+              { lastName: { [Op.iLike]: `%${query}%` } }
+            ]
+          },
+          required: true
+        });
+        break;
+    
+      case 'category':
+        include.push({
+          model: Category,
+          as: 'Category',
+          where: {
+            name: { [Op.iLike]: `%${query}%` }
+          },
+          required: true
+        });
+        break;
+    
+      default:
+        return res.status(400).json({ message: 'Vigane otsingu väli' });
+    }
+
+    // Always include authors & category for context
+    if (!include.find(i => i.as === 'Authors')) {
+      include.push({
+        model: Author,
+        as: 'Authors',
+        through: { attributes: [] }
+      });
+    }
+
+    if (!include.find(i => i.as === 'Category')) {
+      include.push({
+        model: Category,
+        as: 'Category'
+      });
+    }
+
+    const books = await Book.findAll({
+      where,
+      include
+    });
+
+    res.json({ books });
+  } catch (error) {
+    console.error('Viga otsingul:', error);
+    res.status(500).json({ message: 'Otsing ebaõnnestus' });
+  }
+};
+
+
+const createBook = async (req, res) => {
+  try {
+    const { title, publicationYear, author } = req.body;
+
+    if (!author || !author.firstName || !author.lastName) {
+      return res.status(400).json({ message: 'Autorinimi on kohustuslik' });
+    }
+
+    const newBook = await Book.create({ title, publicationYear });
+
+    // Create author and associate
+    const newAuthor = await Author.create(author);
+    await newBook.addAuthor(newAuthor);
+
+    res.status(201).json({ message: 'Raamat lisatud', book: newBook });
+  } catch (err) {
+    console.error('Viga raamatu lisamisel:', err);
+    res.status(500).json({ message: 'Serveri viga' });
+  }
+};
+
+
+
+
+module.exports = { getBookById, getBooks, updateBook, deleteBook, searchBooks, createBook };
