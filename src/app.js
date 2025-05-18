@@ -39,6 +39,7 @@ app.use('/api/auth', require('../routes/auth.routes'));
 app.use('/api/books', require('../routes/book.routes'));
 app.use('/api/comments', require('../routes/comment.routes'));
 app.use('/api/authors', require('../routes/author.routes'));
+app.use('/api/categories', require('../routes/category.routes'));
 app.use('/api/logs', require('../routes/log.routes'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

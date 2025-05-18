@@ -39,7 +39,7 @@ See projekt on **Raamatute Haldamise API**, mille eesmärk on hallata raamatute,
 
 6. Käivitamiseks server:
    ```bash
-   node src/app.js
+   npm start
 
 6. Käivitamiseks frontend:
    ```bash

@@ -1,5 +1,5 @@
 // controllers/log.controller.js
-const { Log } = require('../src/models');
+const { Log, User } = require('../src/models');
 const { logAction } = require('../utils/logger')
 
 // User activity logging
@@ -13,14 +13,18 @@ const createLog = async (userId, action, details) => {
   }
 };
 
-// Looking up logs
-const getLogs = async (req, res) => {
+
+const getLogs = async (_, res) => {
   try {
-    const logs = await Log.findAll();
+    const logs = await Log.findAll({
+      include: [{ model: User, attributes: ['username'] }],
+      order: [['createdAt', 'DESC']]
+    });
     return res.status(200).json(logs);
   } catch (error) {
     return res.status(500).json({ message: 'Getting logs failed', error });
   }
 };
+
 
 module.exports = { createLog, getLogs };

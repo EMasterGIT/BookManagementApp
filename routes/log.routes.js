@@ -35,4 +35,10 @@ const { getLogs } = require('../controllers/log.controller');
  */
 router.get('/', authenticateJWT, authorizeRole('Admin'), getLogs);
 
+router.get('/debug', async (req, res) => {
+    const logs = await Log.findAll();
+    res.json(logs);
+  });
+  
+
 module.exports = router;

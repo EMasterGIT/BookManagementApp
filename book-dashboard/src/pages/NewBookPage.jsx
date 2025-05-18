@@ -2,39 +2,41 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
-
-
 function NewBookPage() {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
-  const [authors, setAuthors] = useState([]);
-  const [selectedAuthors, setSelectedAuthors] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [category, setCategory] = useState('');
 
+  // Fetchib andmed serverist
+  const fetchData = async () => {
+    try {
+      if (role === 'Admin') {
+        const [, categoriesRes] = await Promise.all([
+          fetch('/api/authors', { headers: { Authorization: `Bearer ${token}` } }),
+          fetch('/api/categories', { headers: { Authorization: `Bearer ${token}` } })
+        ]);
 
-  useEffect(() => {
-    const fetchAuthors = async () => {
-      try {
-        const res = await fetch('/api/authors', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        setAuthors(data.authors); 
-      } catch (err) {
-        console.error('Viga autorite laadimisel:', err);
+        const categoriesText = await categoriesRes.text();
+        
+
+        const categoriesData = JSON.parse(categoriesText);
+        setCategories(categoriesData.categories);
       }
-    };
-  
-    if (role === 'Admin') {
-      fetchAuthors();
+    } catch (err) {
+      console.error('Viga andmete laadimisel:', err);
     }
-  }, [role, token]);
+  };
 
+  // Kutsubi andmete laadimine
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,8 +50,8 @@ function NewBookPage() {
         body: JSON.stringify({
           title,
           publicationYear: parseInt(year),
-          category,
-          author: { firstName, lastName } 
+          categoryId: selectedCategoryId,
+          author: { firstName, lastName }
         }),
       });
 
@@ -59,19 +61,15 @@ function NewBookPage() {
         alert('Raamat lisatud!');
         setTitle('');
         setYear('');
-        setSelectedAuthors([]);
+        setFirstName('');
+        setLastName('');
+        setSelectedCategoryId('');
       } else {
         alert(data.message || 'Midagi läks valesti');
       }
     } catch (err) {
       console.error('Viga raamatu lisamisel:', err);
     }
-  };
-
-  const toggleAuthor = (id) => {
-    setSelectedAuthors((prev) =>
-      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
-    );
   };
 
   if (role !== 'Admin') {
@@ -112,16 +110,23 @@ function NewBookPage() {
           required
         />
         <br />
-        <input
-            placeholder="Kategooria (žanr)"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          />
+        <select
+          value={selectedCategoryId}
+          onChange={(e) => setSelectedCategoryId(e.target.value)}
+          required
+        >
+          <option value="">Vali kategooria</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+        <br />
         <button type="submit">Lisa raamat</button>
       </form>
     </div>
   );
 }
-  
+
 export default NewBookPage;

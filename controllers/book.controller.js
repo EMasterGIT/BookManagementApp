@@ -56,6 +56,9 @@ const getBooks = async (req, res) => {
           as: 'Authors',
           through: { attributes: [] } // Ära kaasa seostabeli andmeid
         },
+        { model: Category, 
+          as: 'Category',
+          attributes: ['id', 'name'] },
         {
           model: Comment,
           as: 'Comments',
@@ -223,13 +226,17 @@ const searchBooks = async (req, res) => {
 
 const createBook = async (req, res) => {
   try {
-    const { title, publicationYear, author } = req.body;
+    const { title, publicationYear, categoryId, author } = req.body;
 
     if (!author || !author.firstName || !author.lastName) {
       return res.status(400).json({ message: 'Autorinimi on kohustuslik' });
     }
 
-    const newBook = await Book.create({ title, publicationYear });
+    const newBook = await Book.create({
+      title,
+      publicationYear,
+      categoryId,
+    });
 
     // Create author and associate
     const newAuthor = await Author.create(author);

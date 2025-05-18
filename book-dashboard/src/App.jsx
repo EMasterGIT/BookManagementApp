@@ -60,7 +60,7 @@ return (
       </>
     ) : (
       <>
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="books" element={<BookListPage />} />
           <Route path="books/:id" element={<BookDetailPage />} />
