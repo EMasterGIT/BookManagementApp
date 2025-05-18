@@ -56,7 +56,7 @@ function NewBookPage() {
       });
 
       const data = await res.json();
-
+      // Kontrollib, kas vastus on edukas
       if (res.ok) {
         alert('Raamat lisatud!');
         setTitle('');

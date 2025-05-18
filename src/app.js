@@ -31,8 +31,6 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
-// Static
-app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Routes
 app.use('/api/auth', require('../routes/auth.routes'));

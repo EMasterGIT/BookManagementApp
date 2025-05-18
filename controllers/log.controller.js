@@ -2,11 +2,11 @@
 const { Log, User } = require('../src/models');
 const { logAction } = require('../utils/logger')
 
-// User activity logging
+// Kasutab logAction funktsiooni, et luua logi
 const createLog = async (userId, action, details) => {
   try {
-    // Calling logAction here
-    await logAction(action, userId, details); // use logAction to log activity
+    // Kutsubi logAction funktsioon
+    await logAction(action, userId, details); 
     console.log('Log created');
   } catch (error) {
     console.error('Log error:', error);

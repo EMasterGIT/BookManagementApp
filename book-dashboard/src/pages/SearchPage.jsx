@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
-
+// funktsioon, mis tegeleb raamatute otsimisega
+// ja kuvab tulemused
 function SearchPage() {
   const [search, setSearch] = useState('');
   const [searchField, setSearchField] = useState('title'); // default
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
-
+ 
   useEffect(() => {
     const fetchResults = async () => {
       if (search.trim() === '') {
